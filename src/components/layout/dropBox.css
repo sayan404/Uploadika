@@ -1,0 +1,29 @@
+.uploadedFiles-main-container{
+    margin-top: 10vh;
+    padding: 5vh 1vh;
+}
+.uploadedFiles-heading{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 700;
+    font-size: 3.5vh;
+    color: rgba(24, 4, 4, 0.616);
+    padding-bottom: 3vh;
+    letter-spacing: 1px;
+}
+.upload-main-button{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 2.5vh;
+    color: white;
+    background-color: rgba(3, 27, 245, 0.518);
+    padding: 1.5vh;
+    cursor: pointer;
+    border-radius: 10px;
+}
+.uploadButton-container{
+    width: 40vh;
+    background-color: rgba(0, 0, 255, 0.053);
+    border: 1px solid black;
+    padding: 5vh;
+    border-radius: 10px;
+    margin: 0 auto;
+}
