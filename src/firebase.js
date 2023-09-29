@@ -1,20 +1,16 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getStorage } from 'firebase/storage'
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCwJ4AmFYr2LBa52fXvNOhTOBQS5VIDRVw",
-  authDomain: "uploadika.firebaseapp.com",
-  projectId: "uploadika",
-  storageBucket: "uploadika.appspot.com",
-  messagingSenderId: "11381260474",
-  appId: "1:11381260474:web:2f5761529db091c0db8283",
-  measurementId: "G-E3RCDFV05N"
-  };
+  apiKey: "AIzaSyBvM4e3w3vmeuUHD1Le4L1gaC5kTBmrB5A",
+  authDomain: "uploadika-b352f.firebaseapp.com",
+  projectId: "uploadika-b352f",
+  storageBucket: "uploadika-b352f.appspot.com",
+  messagingSenderId: "983654269164",
+  appId: "1:983654269164:web:7a6ebed74a92070bdc65c9"
+};
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app)
+export const db = getFirestore(app);

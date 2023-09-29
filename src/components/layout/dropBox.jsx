@@ -3,7 +3,7 @@ import './dropBox.css'
 import { useDropzone } from 'react-dropzone'
 import Button from '@mui/material/Button';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { storage } from '../../firebase';
+import { storage, db } from '../../firebase';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,9 +11,23 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { addDoc, collection, getDocs } from 'firebase/firestore'
+
+
 const DropBox = () => {
     const [files, setFiles] = useState([])
     const [uploadedFiles, setUploadedFiles] = useState([])
+    const value = collection(db, "DocumentLinks")
+
+
+    useEffect(() => {
+        const getData = async () => {
+            const dbVal = await getDocs(value)
+            setUploadedFiles(dbVal.docs.map(doc => ({ ...doc.data(), id: doc.id })))
+        }
+        getData()
+    }, [])
+
     const onDrop = ((acceptedFiles) => {
         setFiles(previousFiles => [
             ...previousFiles,
@@ -30,13 +44,25 @@ const DropBox = () => {
 
     const handleSubmit = async (file) => {
         if (!file) return
-        if (uploadedFiles.includes(file)) {
-            return
+        if (uploadedFiles) {
+            for (let i = 0; i < uploadedFiles.length; i++) {
+                const e = uploadedFiles[i];
+                if (e.name === file.name) {
+                    return
+                }
+            }
         }
         const fileName = file.name
         try {
             const storeageRef = ref(storage, `Documents/${fileName}`)
             await uploadBytes(storeageRef, file)
+        } catch (error) {
+            console.log(error);
+        }
+        try {
+            const pdfRef = ref(storage, `Documents/${fileName}`);
+            const url = await getDownloadURL(pdfRef);
+            await addDoc(value, { downloadLink: url, date: componentDidMount(file.lastModified), size: file.size / 1000, name: file.name })
         } catch (error) {
             console.log(error);
         }
@@ -131,8 +157,8 @@ const DropBox = () => {
                                                 <TableCell component="th" scope="row">
                                                     {row.name}
                                                 </TableCell>
-                                                <TableCell align="right">{row.size / 1000}</TableCell>
-                                                <TableCell align="right">{componentDidMount(row.lastModified)}</TableCell>
+                                                <TableCell align="right">{row.size}</TableCell>
+                                                <TableCell align="right">{row.date}</TableCell>
                                                 <TableCell align="right"> <Button variant="contained" onClick={() => downloadFile(row.name)}>Download</Button></TableCell>
                                             </TableRow>
                                         ))}
